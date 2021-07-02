@@ -15,7 +15,7 @@ for (let i = 0; i < thumbnails.length; i++) {
     fullPhoto.querySelector('.comments-loader').classList.add('hidden');
     document.querySelector('body').classList.add('modal-open');
   });
-};
+}
 
 fullPhotoCloseButton.addEventListener('click', () => {
   document.querySelector('body').classList.remove('modal-open');
