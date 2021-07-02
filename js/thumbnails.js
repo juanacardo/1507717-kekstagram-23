@@ -4,11 +4,10 @@ const thumbnailsContainer = document.querySelector('.pictures');
 const templateFragment = document.querySelector('#picture').content;
 const pictureTemplate = templateFragment.querySelector('.picture');
 
-
 const userPhotos = generatePhotos(PHOTO_COUNT);
 const thumbnailsContainerFragment = document.createDocumentFragment();
 
-userPhotos.forEach(({url, likes, comments}) =>{
+userPhotos.forEach(({url, likes, comments}) => {
   const userPhoto = pictureTemplate.cloneNode(true);
   userPhoto.querySelector('.picture__img').src = url;
   userPhoto.querySelector('.picture__likes').textContent = likes;
@@ -17,3 +16,5 @@ userPhotos.forEach(({url, likes, comments}) =>{
 });
 
 thumbnailsContainer.appendChild(thumbnailsContainerFragment);
+
+export {userPhotos};
