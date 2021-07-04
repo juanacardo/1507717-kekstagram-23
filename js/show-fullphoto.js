@@ -4,6 +4,7 @@ const thumbnails = document.querySelectorAll('.picture__img');
 const fullPhoto = document.querySelector('.big-picture');
 const fullPhotoCloseButton = fullPhoto.querySelector('#picture-cancel');
 const fullPhotoCommentsList = fullPhoto.querySelector('.social__comments');
+const fullPhotoCommentTemplate = fullPhotoCommentsList.querySelector('.social__comment').cloneNode(true);
 
 thumbnails.forEach((thumbnail, index) => {
   thumbnail.addEventListener('click', () => {
@@ -15,8 +16,9 @@ thumbnails.forEach((thumbnail, index) => {
     fullPhoto.querySelector('.social__comment-count').classList.add('hidden');
     fullPhoto.querySelector('.comments-loader').classList.add('hidden');
     document.querySelector('body').classList.add('modal-open');
+    fullPhotoCommentsList.innerHTML = '';
     userPhotos[index].comments.forEach((comment) => {
-      const fullPhotoComment = fullPhotoCommentsList.querySelector('.social__comment').cloneNode(true);
+      const fullPhotoComment = fullPhotoCommentTemplate.cloneNode(true);
       fullPhotoComment.querySelector('img').src = comment.avatar;
       fullPhotoComment.querySelector('img').alt = comment.name;
       fullPhotoComment.querySelector('.social__text').textContent = comment.message;
