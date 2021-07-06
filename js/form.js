@@ -79,6 +79,7 @@ hashtagInput.addEventListener('input', () => {
       hashtagInput.setCustomValidity('');
     }
   });
+  hashtagInput.reportValidity();
 });
 
 
