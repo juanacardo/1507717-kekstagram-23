@@ -15,4 +15,6 @@ const checkStringLenght = (string, maxLenght) => string.length > maxLenght;
 
 checkStringLenght(140, 'Привет!');
 
-export {getRandomNumber};
+const isEscEvent = (evt) => evt.key === 'Escape' || evt.key === 'Esc';
+
+export {getRandomNumber, isEscEvent};
