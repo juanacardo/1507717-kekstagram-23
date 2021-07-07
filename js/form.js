@@ -1,4 +1,4 @@
-import {isEscEvent} from './utils.js';
+import {isEscEvent, checkArrayhasDuplicates} from './utils.js';
 
 const MAX_COMMENT_LENGTH = 140;
 const MIN_HASHTAG_LENGHT = 2;
@@ -13,53 +13,38 @@ const formCloseButton = imgUploadForm.querySelector('#upload-cancel');
 const commentInput = imgUploadForm.querySelector('.text__description');
 const hashtagInput = imgUploadForm.querySelector('.text__hashtags');
 
+// Функция скрытия формы
 const hideImgUploadForm = () => {
   document.querySelector('body').classList.remove('modal-open');
   formOverlay.classList.add('hidden');
 };
 
-const onUploadFormEscKeydown = (evt) => {
-  if (isEscEvent(evt)) {
-    evt.preventDefault();
-    hideImgUploadForm();
-  }
-};
-
-const showUploadForm = () => {
-  formOverlay.classList.remove('hidden');
-  document.querySelector('body').classList.add('modal-open');
-  document.addEventListener('keydown', onUploadFormEscKeydown);
-};
-
-formCloseButton.addEventListener('click', () => {
-  hideImgUploadForm();
-  document.removeEventListener('keydown', onUploadFormEscKeydown);
-  uploadInput.value = '';
-  commentInput.value = '';
-  hashtagInput.value = '';
-});
-
-uploadInput.addEventListener('change', () => {
-  showUploadForm();
-});
-
+// Функция визульного отображения ошибки валидации
 const setError = (input) => {
   input.style.borderColor = 'red';
-  input.style.borderWidth = '3px';
+  input.style.borderWidth = '5px';
 };
 
-commentInput.addEventListener('input', () => {
+const removeError = (input) => {
+  input.style.borderColor = '';
+  input.style.borderWidth = '';
+};
+
+// Обработчик события для проверки валидации комментария
+const onCommentInput = () => {
   const valueLength = commentInput.value.length;
   if (valueLength > MAX_COMMENT_LENGTH) {
     commentInput.setCustomValidity(`Удалите лишние ${  valueLength - MAX_COMMENT_LENGTH } симв.`);
     setError(commentInput);
   } else {
     commentInput.setCustomValidity('');
+    removeError(commentInput);
   }
   commentInput.reportValidity();
-});
+};
 
-hashtagInput.addEventListener('input', () => {
+// Обработчик события для проверки валидации хэштегов
+const onHashtagInput = () => {
   const arrayOfHashtags = hashtagInput.value.split(' ');
   const re = /^#[A-Za-zА-Яа-я0-9]{1,19}$/;
   arrayOfHashtags.forEach((hashtag) => {
@@ -75,11 +60,58 @@ hashtagInput.addEventListener('input', () => {
     } else if (re.test(hashtag) === false) {
       hashtagInput.setCustomValidity('Хэштег должен начинаться с решетки и может состоять из букв и чисел');
       setError(hashtagInput);
+    } else if (checkArrayhasDuplicates(arrayOfHashtags)) {
+      hashtagInput.setCustomValidity('Хэштеги должны быть разными');
     } else {
       hashtagInput.setCustomValidity('');
+      removeError(hashtagInput);
     }
   });
   hashtagInput.reportValidity();
+};
+
+const onInputEscKeydown = (evt) => {
+  if (isEscEvent(evt)) {
+    evt.stopPropagation();
+  }
+};
+
+// Функция скрытия формы по клавише Esc
+const onUploadFormEscKeydown = (evt) => {
+  if (isEscEvent(evt)) {
+    evt.preventDefault();
+    hideImgUploadForm();
+    imgUploadForm.reset();
+    commentInput.removeEventListener('input', onCommentInput);
+    hashtagInput.removeEventListener('input', onHashtagInput);
+    commentInput.removeEventListener('keydown', onInputEscKeydown);
+    hashtagInput.removeEventListener('keydown', onInputEscKeydown);
+  }
+};
+
+// Функция показа формы
+const showUploadForm = () => {
+  formOverlay.classList.remove('hidden');
+  document.querySelector('body').classList.add('modal-open');
+  document.addEventListener('keydown', onUploadFormEscKeydown);
+};
+
+// Обработчик события на загрузку изображения
+uploadInput.addEventListener('change', () => {
+  showUploadForm();
+  commentInput.addEventListener('input', onCommentInput);
+  hashtagInput.addEventListener('input', onHashtagInput);
 });
 
+// Обработчик события на закрытие формы
+formCloseButton.addEventListener('click', () => {
+  hideImgUploadForm();
+  document.removeEventListener('keydown', onUploadFormEscKeydown);
+  commentInput.removeEventListener('input', onCommentInput);
+  hashtagInput.removeEventListener('input', onHashtagInput);
+  commentInput.removeEventListener('keydown', onInputEscKeydown);
+  hashtagInput.removeEventListener('keydown', onInputEscKeydown);
+});
 
+commentInput.addEventListener('keydown', onInputEscKeydown);
+hashtagInput.addEventListener('keydown', onInputEscKeydown);

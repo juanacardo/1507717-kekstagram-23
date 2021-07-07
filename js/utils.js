@@ -15,6 +15,11 @@ const checkStringLenght = (string, maxLenght) => string.length > maxLenght;
 
 checkStringLenght(140, 'Привет!');
 
+// Функция для проверки нажатия клавиши Esc
+
 const isEscEvent = (evt) => evt.key === 'Escape' || evt.key === 'Esc';
 
-export {getRandomNumber, isEscEvent};
+// Функция для проверки повторяющихся элементов в массиве
+const checkArrayhasDuplicates = (array) => (new Set(array)).size !== array.length;
+
+export {getRandomNumber, isEscEvent, checkArrayhasDuplicates};
