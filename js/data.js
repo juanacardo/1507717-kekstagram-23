@@ -90,7 +90,7 @@ const createPhotoDescription = (id) => ({
   url: `photos/${  id  }.jpg`,
   description: getRandomArrayElement(DESCRIPTIONS),
   likes: getRandomNumber(MIN_LIKES_QUANTITY, MAX_LIKES_QUANTITY),
-  comments: new Array(2).fill(null).map(() => createComment()),
+  comments: new Array(9).fill(null).map(() => createComment()),
 });
 
 // Создание массива-счетчика для списка фотографий

@@ -1,4 +1,6 @@
 // Функция, возвращающая целое число из диапазона, создана на основе функции getRandomIntInclusive (https://developer.mozilla.org/)
+const ESC_KEY = 'Esc';
+const ESCAPE_KEY = 'Escape';
 
 const getRandomNumber = (min, max) => {
   const minValue = Math.ceil(min);
@@ -17,9 +19,9 @@ checkStringLenght(140, 'Привет!');
 
 // Функция для проверки нажатия клавиши Esc
 
-const isEscEvent = (evt) => evt.key === 'Escape' || evt.key === 'Esc';
+const isEscEvent = (evt) => evt.key === ESCAPE_KEY || evt.key === ESC_KEY;
 
 // Функция для проверки повторяющихся элементов в массиве
-const checkArrayhasDuplicates = (array) => (new Set(array)).size !== array.length;
+const checkElementsHasDuplicates = (array) => (new Set(array)).size !== array.length;
 
-export {getRandomNumber, isEscEvent, checkArrayhasDuplicates};
+export {getRandomNumber, isEscEvent, checkElementsHasDuplicates};
