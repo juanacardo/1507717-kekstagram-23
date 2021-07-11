@@ -36,9 +36,22 @@ const showFullPhoto = () => {
 fullPhotoCloseButton.addEventListener('click', () => {
   hideFullPhoto();
   document.removeEventListener('keydown', onFullPhotoEscKeydown);
+  commentsLoader.classList.remove('hidden');
 });
 
 const updateCounter = (count) => commentsCount.firstChild.textContent = `${count} из `;
+
+const renderPartOfComments = (counter, comments) => {
+  for (let i = 0; i < counter + MAX_VISIBLE_COMMENTS; i++) {
+    fullPhotoCommentsList.appendChild(comments[i]);
+    updateCounter(i + 1);
+    if (i === comments.length - 1) {
+      commentsLoader.classList.add('hidden');
+      break;
+    }
+    console.log(i);
+  }
+};
 
 // Загрузка данных для большого изображения на основе данных маленьких фотографий
 thumbnails.forEach((thumbnail, index) => {
@@ -51,27 +64,21 @@ thumbnails.forEach((thumbnail, index) => {
     document.querySelector('body').classList.add('modal-open');
     fullPhotoCommentsList.innerHTML = '';
     const fragment = document.createDocumentFragment();
-    userPhotos[index].comments.forEach((comment, commentIndex) => {
+    userPhotos[index].comments.forEach((comment) => {
       const fullPhotoComment = fullPhotoCommentElement.cloneNode(true);
       fullPhotoComment.querySelector('img').src = comment.avatar;
       fullPhotoComment.querySelector('img').alt = comment.name;
       fullPhotoComment.querySelector('.social__text').textContent = comment.message;
       fragment.appendChild(fullPhotoComment);
-      if (commentIndex >= MAX_VISIBLE_COMMENTS) {
-        fullPhotoComment.classList.add('hidden');
-        updateCounter(MAX_VISIBLE_COMMENTS);
-      } else {
-        updateCounter(commentIndex + 1);
-      }
     });
-    fullPhotoCommentsList.appendChild(fragment);
+    const currentComments = Array.from(fragment.children);
+    console.log(currentComments);
+    let commentCounter = 0;
+    renderPartOfComments(commentCounter, currentComments);
     commentsLoader.addEventListener('click', () => {
-      const currentComments = fullPhotoCommentsList.children;
-      for (const comment of currentComments) {
-        comment.classList.remove('hidden');
-        commentsLoader.classList.add('hidden');
-        updateCounter(currentComments.length);
-      }
+      commentCounter+=MAX_VISIBLE_COMMENTS;
+      renderPartOfComments(commentCounter, currentComments);
     });
   });
 });
+
