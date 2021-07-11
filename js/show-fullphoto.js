@@ -49,7 +49,6 @@ const renderPartOfComments = (counter, comments) => {
       commentsLoader.classList.add('hidden');
       break;
     }
-    console.log(i);
   }
 };
 
@@ -72,7 +71,6 @@ thumbnails.forEach((thumbnail, index) => {
       fragment.appendChild(fullPhotoComment);
     });
     const currentComments = Array.from(fragment.children);
-    console.log(currentComments);
     let commentCounter = 0;
     renderPartOfComments(commentCounter, currentComments);
     commentsLoader.addEventListener('click', () => {
