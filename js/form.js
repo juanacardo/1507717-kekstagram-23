@@ -1,4 +1,4 @@
-import {isEscEvent, checkArrayhasDuplicates} from './utils.js';
+import {isEscEvent, checkElementsHasDuplicates} from './utils.js';
 
 const MAX_COMMENT_LENGTH = 140;
 const MIN_HASHTAG_LENGHT = 2;
@@ -45,7 +45,8 @@ const onCommentInput = () => {
 
 // Обработчик события для проверки валидации хэштегов
 const onHashtagInput = () => {
-  const arrayOfHashtags = hashtagInput.value.split(' ');
+  const arrayOfUserHashtags = hashtagInput.value.split(' ');
+  const arrayOfHashtags = arrayOfUserHashtags.map((hashtag) => hashtag.toLowerCase());
   const re = /^#[A-Za-zА-Яа-я0-9]{1,19}$/;
   arrayOfHashtags.forEach((hashtag) => {
     if (hashtag.length < MIN_HASHTAG_LENGHT) {
@@ -60,7 +61,7 @@ const onHashtagInput = () => {
     } else if (re.test(hashtag) === false) {
       hashtagInput.setCustomValidity('Хэштег должен начинаться с решетки и может состоять из букв и чисел');
       setError(hashtagInput);
-    } else if (checkArrayhasDuplicates(arrayOfHashtags)) {
+    } else if (checkElementsHasDuplicates(arrayOfHashtags)) {
       hashtagInput.setCustomValidity('Хэштеги должны быть разными');
     } else {
       hashtagInput.setCustomValidity('');
@@ -94,6 +95,8 @@ const showUploadForm = () => {
   formOverlay.classList.remove('hidden');
   document.querySelector('body').classList.add('modal-open');
   document.addEventListener('keydown', onUploadFormEscKeydown);
+  commentInput.addEventListener('keydown', onInputEscKeydown);
+  hashtagInput.addEventListener('keydown', onInputEscKeydown);
 };
 
 // Обработчик события на загрузку изображения
@@ -112,6 +115,3 @@ formCloseButton.addEventListener('click', () => {
   commentInput.removeEventListener('keydown', onInputEscKeydown);
   hashtagInput.removeEventListener('keydown', onInputEscKeydown);
 });
-
-commentInput.addEventListener('keydown', onInputEscKeydown);
-hashtagInput.addEventListener('keydown', onInputEscKeydown);
