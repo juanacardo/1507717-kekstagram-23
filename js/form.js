@@ -1,4 +1,6 @@
 import {isEscEvent, checkElementsHasDuplicates} from './utils.js';
+import {resetEffect} from './slider.js';
+import {setScale, MAX_SCALE_VALUE} from './scale.js';
 
 const MAX_COMMENT_LENGTH = 140;
 const MIN_HASHTAG_LENGHT = 2;
@@ -114,4 +116,6 @@ formCloseButton.addEventListener('click', () => {
   hashtagInput.removeEventListener('input', onHashtagInput);
   commentInput.removeEventListener('keydown', onInputEscKeydown);
   hashtagInput.removeEventListener('keydown', onInputEscKeydown);
+  resetEffect();
+  setScale(MAX_SCALE_VALUE);
 });
