@@ -102,7 +102,7 @@ const resetEffect = () => {
   imagePreview.style.filter = 'none';
 };
 
-const onEffects = () => {
+const switchEffects = () => {
   if (originalRadio.checked) {
     resetEffect();
   } else if (chromeEffectRadio.checked) {
@@ -123,11 +123,23 @@ const onEffects = () => {
   }
 };
 
-originalRadio.addEventListener('click', onEffects);
-chromeEffectRadio.addEventListener('click', onEffects);
-sepiaEffectRadio.addEventListener('click', onEffects);
-marvinEffectRadio.addEventListener('click', onEffects);
-phobosEffectRadio.addEventListener('click', onEffects);
-heatEffectRadio.addEventListener('click', onEffects);
+const addEventListenersEffects = () => {
+  originalRadio.addEventListener('click', switchEffects);
+  chromeEffectRadio.addEventListener('click', switchEffects);
+  sepiaEffectRadio.addEventListener('click', switchEffects);
+  marvinEffectRadio.addEventListener('click', switchEffects);
+  phobosEffectRadio.addEventListener('click', switchEffects);
+  heatEffectRadio.addEventListener('click', switchEffects);
+};
 
-export {resetEffect, onEffects, originalRadio, chromeEffectRadio, sepiaEffectRadio, marvinEffectRadio, phobosEffectRadio, heatEffectRadio};
+const removeEventListenersEffects = () => {
+  originalRadio.removeEventListener('click', switchEffects);
+  chromeEffectRadio.removeEventListener('click', switchEffects);
+  sepiaEffectRadio.removeEventListener('click', switchEffects);
+  marvinEffectRadio.removeEventListener('click', switchEffects);
+  phobosEffectRadio.removeEventListener('click', switchEffects);
+  heatEffectRadio.removeEventListener('click', switchEffects);
+  resetEffect();
+};
+
+export {addEventListenersEffects, removeEventListenersEffects};

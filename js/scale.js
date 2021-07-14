@@ -30,7 +30,15 @@ const onButtonPlusClick = () => {
   }
 };
 
-buttonMinus.addEventListener('click', onButtonMinusClick);
-buttonPlus.addEventListener('click', onButtonPlusClick);
+const addEventListenersScale = () => {
+  buttonMinus.addEventListener('click', onButtonMinusClick);
+  buttonPlus.addEventListener('click', onButtonPlusClick);
+};
 
-export {buttonMinus, buttonPlus, onButtonMinusClick, onButtonPlusClick, setScale, MAX_SCALE_VALUE};
+const removeEventListenersScale = () => {
+  buttonMinus.removeEventListener('click', onButtonMinusClick);
+  buttonPlus.removeEventListener('click', onButtonPlusClick);
+  setScale(MAX_SCALE_VALUE);
+};
+
+export {addEventListenersScale, removeEventListenersScale};
