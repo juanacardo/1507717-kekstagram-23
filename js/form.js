@@ -1,4 +1,6 @@
 import {isEscEvent, checkElementsHasDuplicates} from './utils.js';
+import {addEventListenersEffects, removeEventListenersEffects} from './slider.js';
+import {addEventListenersScale, removeEventListenersScale} from './scale.js';
 
 const MAX_COMMENT_LENGTH = 140;
 const MIN_HASHTAG_LENGHT = 2;
@@ -87,6 +89,8 @@ const onUploadFormEscKeydown = (evt) => {
     hashtagInput.removeEventListener('input', onHashtagInput);
     commentInput.removeEventListener('keydown', onInputEscKeydown);
     hashtagInput.removeEventListener('keydown', onInputEscKeydown);
+    removeEventListenersEffects();
+    removeEventListenersScale();
   }
 };
 
@@ -104,6 +108,8 @@ uploadInput.addEventListener('change', () => {
   showUploadForm();
   commentInput.addEventListener('input', onCommentInput);
   hashtagInput.addEventListener('input', onHashtagInput);
+  addEventListenersEffects();
+  addEventListenersScale();
 });
 
 // Обработчик события на закрытие формы
@@ -114,4 +120,6 @@ formCloseButton.addEventListener('click', () => {
   hashtagInput.removeEventListener('input', onHashtagInput);
   commentInput.removeEventListener('keydown', onInputEscKeydown);
   hashtagInput.removeEventListener('keydown', onInputEscKeydown);
+  removeEventListenersEffects();
+  removeEventListenersScale();
 });
