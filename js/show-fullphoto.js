@@ -1,4 +1,3 @@
-import {userPhotos} from './thumbnails.js';
 import {isEscEvent} from './utils.js';
 
 const MAX_VISIBLE_COMMENTS = 5;
@@ -68,17 +67,17 @@ fullPhotoCloseButton.addEventListener('click', () => {
 });
 
 // Загрузка данных для большого изображения на основе данных маленьких фотографий
-thumbnails.forEach((thumbnail, index) => {
+thumbnails.forEach((thumbnail) => {
   thumbnail.addEventListener('click', () => {
     showFullPhoto();
-    fullPhoto.querySelector('img').src = userPhotos[index].url;
-    fullPhoto.querySelector('.likes-count').textContent = userPhotos[index].likes;
-    fullPhoto.querySelector('.comments-count').textContent = userPhotos[index].comments.length;
-    fullPhoto.querySelector('.social__caption').textContent = userPhotos[index].description;
+    fullPhoto.querySelector('img').src = thumbnail.url;
+    fullPhoto.querySelector('.likes-count').textContent = thumbnail.likes;
+    fullPhoto.querySelector('.comments-count').textContent = thumbnail.comments.length;
+    fullPhoto.querySelector('.social__caption').textContent = thumbnail.description;
     document.querySelector('body').classList.add('modal-open');
     fullPhotoCommentsList.innerHTML = '';
     commentCounter = 0;
-    currentComments = userPhotos[index].comments;
+    currentComments = thumbnail.comments;
     renderPartOfComments(commentCounter, currentComments);
     commentsLoader.addEventListener('click', onLoadMoreClick);
   });

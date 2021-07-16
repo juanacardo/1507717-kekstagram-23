@@ -19,6 +19,7 @@ const hashtagInput = imgUploadForm.querySelector('.text__hashtags');
 const hideImgUploadForm = () => {
   document.querySelector('body').classList.remove('modal-open');
   formOverlay.classList.add('hidden');
+  imgUploadForm.reset();
 };
 
 // Функция визульного отображения ошибки валидации
@@ -123,3 +124,5 @@ formCloseButton.addEventListener('click', () => {
   removeEventListenersEffects();
   removeEventListenersScale();
 });
+
+export {imgUploadForm, hideImgUploadForm};
