@@ -23,7 +23,7 @@ const setUserFormSubmit = (onSuccess, onError) => {
     const formData = new FormData(evt.target);
 
     fetch(
-      'https://23.javascript.pages.academy/kekstagram',
+      'https://23.javascript.pages.academy/kekstagra',
       {
         method: 'POST',
         body: formData,

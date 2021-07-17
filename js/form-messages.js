@@ -1,5 +1,7 @@
 import {hideImgUploadForm} from './form.js';
 import {isEscEvent} from './utils.js';
+import {removeEventListenersScale} from './scale.js';
+import {removeEventListenersEffects} from './slider.js';
 
 const successUploadMessage = document.querySelector('#success').content.querySelector('section');
 const successFragment = document.createDocumentFragment();
@@ -33,6 +35,8 @@ const onCloseButtonClick = (evt) => {
 
 const onFormSuccessSend = () => {
   hideImgUploadForm();
+  removeEventListenersScale();
+  removeEventListenersEffects();
   successFragment.appendChild(successUploadMessageElement);
   document.body.appendChild(successFragment);
   successCloseButton.addEventListener('click', onCloseButtonClick);
@@ -42,6 +46,8 @@ const onFormSuccessSend = () => {
 
 const onFormErrorSend = () => {
   hideImgUploadForm();
+  removeEventListenersScale();
+  removeEventListenersEffects();
   errorFragment.appendChild(errorUploadMessageElement);
   document.body.appendChild(errorFragment);
   errorCloseButton.addEventListener('click', onCloseButtonClick);
