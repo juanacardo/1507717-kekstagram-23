@@ -1,6 +1,5 @@
-import {renderPhotos} from './thumbnails.js';
 import {showAlert} from './utils.js';
-import {imgUploadForm} from './form.js';
+import {imgUploadForm, onUploadFormEscKeydown} from './form.js';
 import {onFormSuccessSend, onFormErrorSend} from './form-messages.js';
 
 const getUserPhotos = () => fetch('https://23.javascript.pages.academy/kekstagram/data')
@@ -11,18 +10,16 @@ const getUserPhotos = () => fetch('https://23.javascript.pages.academy/kekstagra
       showAlert('Ошибка при загрузке фото. Попробуйте ещё раз');
     }
   })
-  .then((userPhotos) => {
-    renderPhotos(userPhotos);
-  })
   .catch(() => {
     showAlert('Ошибка при загрузке фото. Попробуйте ещё раз');
   });
 
-getUserPhotos();
+const userPhotosPromise = getUserPhotos();
 
 const setUserFormSubmit = (onSuccess, onError) => {
   imgUploadForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
+    document.removeEventListener('keydown', onUploadFormEscKeydown);
     const formData = new FormData(evt.target);
 
     fetch(
@@ -43,3 +40,5 @@ const setUserFormSubmit = (onSuccess, onError) => {
 };
 
 setUserFormSubmit(onFormSuccessSend, onFormErrorSend);
+
+export {userPhotosPromise};

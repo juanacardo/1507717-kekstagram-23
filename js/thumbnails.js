@@ -1,8 +1,10 @@
+import {userPhotosPromise} from './fetch.js';
+
 const thumbnailsContainer = document.querySelector('.pictures');
 const templateFragment = document.querySelector('#picture').content;
 const pictureTemplate = templateFragment.querySelector('.picture');
 
-const renderPhotos = (photos) => {
+userPhotosPromise.then((photos) => {
   const thumbnailsContainerFragment = document.createDocumentFragment();
   photos.forEach(({url, likes, comments}) => {
     const userPhoto = pictureTemplate.cloneNode(true);
@@ -13,6 +15,4 @@ const renderPhotos = (photos) => {
   });
 
   thumbnailsContainer.appendChild(thumbnailsContainerFragment);
-};
-
-export {renderPhotos};
+});

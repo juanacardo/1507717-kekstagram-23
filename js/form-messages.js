@@ -3,48 +3,50 @@ import {isEscEvent} from './utils.js';
 
 const successUploadMessage = document.querySelector('#success').content.querySelector('section');
 const successFragment = document.createDocumentFragment();
-const successUploadMessageTemplate = successUploadMessage.cloneNode(true);
-const successCloseButton = successUploadMessageTemplate.querySelector('.success__button');
+const successUploadMessageElement = successUploadMessage.cloneNode(true);
+const successCloseButton = successUploadMessageElement.querySelector('.success__button');
 
 const errorUploadMessage = document.querySelector('#error').content.querySelector('section');
 const errorFragment = document.createDocumentFragment();
-const errorUploadMessageTemplate = errorUploadMessage.cloneNode(true);
-const errorCloseButton = errorUploadMessageTemplate.querySelector('.error__button');
+const errorUploadMessageElement = errorUploadMessage.cloneNode(true);
+const errorCloseButton = errorUploadMessageElement.querySelector('.error__button');
 
 const onUploadMessageEscKeydown = (evt) => {
   if (isEscEvent(evt)) {
-    successUploadMessageTemplate.style.display = 'none';//это работает только один раз
+    if (successUploadMessageElement) {
+      document.body.removeChild(successUploadMessageElement);
+    } else if (errorUploadMessageElement) {
+      document.body.removeChild(errorUploadMessageElement);
+    }
   }
 };
 
-const onSuccessCloseButtonClick = () => {
-  successCloseButton.addEventListener('click', () => {
-    successUploadMessageTemplate.style.display = 'none';//это работает только один раз
-  });
-};
-
-const onErrorCloseButtonClick = () => {
-  errorCloseButton.addEventListener('click', () => {
-    errorUploadMessageTemplate.style.display = 'none';//это работает только один раз
-  });
+const onCloseButtonClick = (evt) => {
+  if (successUploadMessageElement) {
+    document.body.removeChild(successUploadMessageElement);
+    evt.stopPropagation();
+  } else if (errorUploadMessageElement) {
+    document.body.removeChild(errorUploadMessageElement);
+    evt.stopPropagation();
+  }
 };
 
 const onFormSuccessSend = () => {
   hideImgUploadForm();
-  successFragment.appendChild(successUploadMessageTemplate);
+  successFragment.appendChild(successUploadMessageElement);
   document.body.appendChild(successFragment);
-  onSuccessCloseButtonClick();
-  onUploadMessageEscKeydown();
-  //здесь должна быть функция по закрытию при клике на произвольную область экрана
+  successCloseButton.addEventListener('click', onCloseButtonClick);
+  document.addEventListener('keydown', onUploadMessageEscKeydown);
+  successUploadMessageElement.addEventListener('click', onCloseButtonClick);
 };
 
 const onFormErrorSend = () => {
   hideImgUploadForm();
-  errorFragment.appendChild(errorUploadMessageTemplate);
+  errorFragment.appendChild(errorUploadMessageElement);
   document.body.appendChild(errorFragment);
-  onErrorCloseButtonClick();
-  onUploadMessageEscKeydown();
-  //здесь должна быть функция по закрытию при клике на произвольную область экрана
+  errorCloseButton.addEventListener('click', onCloseButtonClick);
+  document.addEventListener('keydown', onUploadMessageEscKeydown);
+  errorUploadMessageElement.addEventListener('click', onCloseButtonClick);
 };
 
-export {onFormSuccessSend, onFormErrorSend};
+export {onFormSuccessSend, onFormErrorSend, onUploadMessageEscKeydown};
