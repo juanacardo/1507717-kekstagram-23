@@ -1,6 +1,7 @@
 import {isEscEvent, checkElementsHasDuplicates} from './utils.js';
 import {addEventListenersEffects, removeEventListenersEffects} from './slider.js';
 import {addEventListenersScale, removeEventListenersScale} from './scale.js';
+import {onUploadMessageEscKeydown} from './form-messages.js';
 
 const MAX_COMMENT_LENGTH = 140;
 const MIN_HASHTAG_LENGHT = 2;
@@ -19,6 +20,7 @@ const hashtagInput = imgUploadForm.querySelector('.text__hashtags');
 const hideImgUploadForm = () => {
   document.querySelector('body').classList.remove('modal-open');
   formOverlay.classList.add('hidden');
+  imgUploadForm.reset();
 };
 
 // Функция визульного отображения ошибки валидации
@@ -110,6 +112,7 @@ uploadInput.addEventListener('change', () => {
   hashtagInput.addEventListener('input', onHashtagInput);
   addEventListenersEffects();
   addEventListenersScale();
+  document.removeEventListener('keydown', onUploadMessageEscKeydown);
 });
 
 // Обработчик события на закрытие формы
@@ -123,3 +126,5 @@ formCloseButton.addEventListener('click', () => {
   removeEventListenersEffects();
   removeEventListenersScale();
 });
+
+export {imgUploadForm, hideImgUploadForm, onUploadFormEscKeydown};

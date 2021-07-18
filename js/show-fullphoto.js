@@ -1,9 +1,9 @@
-import {userPhotos} from './thumbnails.js';
 import {isEscEvent} from './utils.js';
+import {userPhotosPromise} from './fetch.js';
+import {onUploadMessageEscKeydown} from './form-messages.js';
 
 const MAX_VISIBLE_COMMENTS = 5;
 
-const thumbnails = document.querySelectorAll('.picture__img');
 const fullPhoto = document.querySelector('.big-picture');
 const fullPhotoCloseButton = fullPhoto.querySelector('#picture-cancel');
 const fullPhotoCommentsList = fullPhoto.querySelector('.social__comments');
@@ -51,6 +51,7 @@ const onFullPhotoEscKeydown = (evt) => {
   if (isEscEvent(evt)) {
     evt.preventDefault();
     hideFullPhoto();
+    commentsLoader.classList.remove('hidden');
   }
 };
 
@@ -68,18 +69,22 @@ fullPhotoCloseButton.addEventListener('click', () => {
 });
 
 // Загрузка данных для большого изображения на основе данных маленьких фотографий
-thumbnails.forEach((thumbnail, index) => {
-  thumbnail.addEventListener('click', () => {
-    showFullPhoto();
-    fullPhoto.querySelector('img').src = userPhotos[index].url;
-    fullPhoto.querySelector('.likes-count').textContent = userPhotos[index].likes;
-    fullPhoto.querySelector('.comments-count').textContent = userPhotos[index].comments.length;
-    fullPhoto.querySelector('.social__caption').textContent = userPhotos[index].description;
-    document.querySelector('body').classList.add('modal-open');
-    fullPhotoCommentsList.innerHTML = '';
-    commentCounter = 0;
-    currentComments = userPhotos[index].comments;
-    renderPartOfComments(commentCounter, currentComments);
-    commentsLoader.addEventListener('click', onLoadMoreClick);
+userPhotosPromise.then((photos) => {
+  const thumbnails = document.querySelectorAll('.picture__img');
+  thumbnails.forEach((thumbnail, index) => {
+    thumbnail.addEventListener('click', () => {
+      showFullPhoto();
+      fullPhoto.querySelector('img').src = photos[index].url;
+      fullPhoto.querySelector('.likes-count').textContent = photos[index].likes;
+      fullPhoto.querySelector('.comments-count').textContent = photos[index].comments.length;
+      fullPhoto.querySelector('.social__caption').textContent = photos[index].description;
+      document.querySelector('body').classList.add('modal-open');
+      fullPhotoCommentsList.innerHTML = '';
+      commentCounter = 0;
+      currentComments = photos[index].comments;
+      renderPartOfComments(commentCounter, currentComments);
+      commentsLoader.addEventListener('click', onLoadMoreClick);
+      document.removeEventListener('keydown', onUploadMessageEscKeydown);
+    });
   });
 });
