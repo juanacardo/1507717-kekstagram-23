@@ -15,25 +15,27 @@ const errorCloseButton = errorUploadMessageElement.querySelector('.error__button
 
 const onUploadMessageEscKeydown = (evt) => {
   if (isEscEvent(evt)) {
-    if (successUploadMessageElement) {
+    if (document.body.contains(successUploadMessageElement)) {
       document.body.removeChild(successUploadMessageElement);
-    } else if (errorUploadMessageElement) {
+    } else if (document.body.contains(errorUploadMessageElement)) {
       document.body.removeChild(errorUploadMessageElement);
     }
+    document.removeEventListener('keydown', onUploadMessageEscKeydown);
   }
 };
 
 const onCloseButtonClick = (evt) => {
-  if (successUploadMessageElement) {
+  if (document.body.contains(successUploadMessageElement)) {
     document.body.removeChild(successUploadMessageElement);
     evt.stopPropagation();
-  } else if (errorUploadMessageElement) {
+  } else if (document.body.contains(errorUploadMessageElement)) {
     document.body.removeChild(errorUploadMessageElement);
     evt.stopPropagation();
   }
+  document.removeEventListener('keydown', onUploadMessageEscKeydown);
 };
 
-const onFormSuccessSend = () => {
+const setFormSuccessPopup = () => {
   hideImgUploadForm();
   removeEventListenersScale();
   removeEventListenersEffects();
@@ -44,7 +46,7 @@ const onFormSuccessSend = () => {
   successUploadMessageElement.addEventListener('click', onCloseButtonClick);
 };
 
-const onFormErrorSend = () => {
+const setFormErrorPopup = () => {
   hideImgUploadForm();
   removeEventListenersScale();
   removeEventListenersEffects();
@@ -55,4 +57,4 @@ const onFormErrorSend = () => {
   errorUploadMessageElement.addEventListener('click', onCloseButtonClick);
 };
 
-export {onFormSuccessSend, onFormErrorSend, onUploadMessageEscKeydown};
+export {setFormSuccessPopup, setFormErrorPopup, onUploadMessageEscKeydown};

@@ -12,11 +12,25 @@ const getRandomNumber = (min, max) => {
   return Math.floor(Math.random() * (maxValue - minValue + 1)) + minValue;
 };
 
-// Функция для проверки максимальной длины строки
+// Функция для получения случайного элемента массива
 
-const checkStringLenght = (string, maxLenght) => string.length > maxLenght;
+const getRandomArrayElement = (elements, splice) => {
+  const result = elements[getRandomNumber(0, elements.length - 1)];
 
-checkStringLenght(140, 'Привет!');
+  if (splice) {
+    elements.splice(elements.indexOf(result), 1);
+  }
+
+  return result;
+};
+
+const getShuffledArray = (array, arrayLenght) => {
+  const newArray = [];
+  while (newArray.length < arrayLenght) {
+    newArray.push(getRandomArrayElement(array, true));
+  }
+  return newArray;
+};
 
 // Функция для проверки нажатия клавиши Esc
 
@@ -44,4 +58,4 @@ const showAlert = (message) => {
   }, ALERT_SHOW_TIME);
 };
 
-export {getRandomNumber, isEscEvent, checkElementsHasDuplicates, showAlert};
+export {getRandomNumber, isEscEvent, checkElementsHasDuplicates, showAlert, getShuffledArray};

@@ -1,6 +1,6 @@
 import {showAlert} from './utils.js';
 import {imgUploadForm, onUploadFormEscKeydown} from './form.js';
-import {onFormSuccessSend, onFormErrorSend} from './form-messages.js';
+import {setFormSuccessPopup, setFormErrorPopup} from './form-messages.js';
 
 const getUserPhotos = () => fetch('https://23.javascript.pages.academy/kekstagram/data')
   .then((response) => {
@@ -23,7 +23,7 @@ const setUserFormSubmit = (onSuccess, onError) => {
     const formData = new FormData(evt.target);
 
     fetch(
-      'https://23.javascript.pages.academy/kekstagra',
+      'https://23.javascript.pages.academy/kekstagram',
       {
         method: 'POST',
         body: formData,
@@ -39,6 +39,6 @@ const setUserFormSubmit = (onSuccess, onError) => {
   });
 };
 
-setUserFormSubmit(onFormSuccessSend, onFormErrorSend);
+setUserFormSubmit(setFormSuccessPopup, setFormErrorPopup);
 
 export {userPhotosPromise};
