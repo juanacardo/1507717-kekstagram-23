@@ -1,8 +1,8 @@
 import {userPhotosPromise} from './fetch.js';
 import {getShuffledArray} from './utils.js';
+import {renderFullPhoto} from './show-fullphoto.js';
 
 const RANDOM_PHOTOS_QUANTITY = 10;
-const filter = document.querySelector('.img-filters');
 const thumbnailsContainer = document.querySelector('.pictures');
 const templateFragment = document.querySelector('#picture').content;
 const pictureTemplate = templateFragment.querySelector('.picture');
@@ -18,9 +18,10 @@ const comparePhotos = (commentsA, commentsB) => {
   return popularityB - popularityA;
 };
 
+const thumbnailsContainerFragment = document.createDocumentFragment();
+
 const renderDefaultPhotos = () => {
   userPhotosPromise.then((photos) => {
-    const thumbnailsContainerFragment = document.createDocumentFragment();
     photos
       .forEach(({url, likes, comments}) => {
         const userPhoto = pictureTemplate.cloneNode(true);
@@ -31,36 +32,31 @@ const renderDefaultPhotos = () => {
       });
 
     thumbnailsContainer.appendChild(thumbnailsContainerFragment);
-    filter.classList.remove('img-filters--inactive');
+    renderFullPhoto(photos);
   });
 };
 
 const renderPopularPhotos = () => {
   userPhotosPromise.then((photos) => {
-    const thumbnailsContainerFragment = document.createDocumentFragment();
-    photos
-      .slice()
-      .sort(comparePhotos)
-      .forEach(({url, likes, comments}) => {
-        const userPhoto = pictureTemplate.cloneNode(true);
-        userPhoto.querySelector('.picture__img').src = url;
-        userPhoto.querySelector('.picture__likes').textContent = likes;
-        userPhoto.querySelector('.picture__comments').textContent = comments.length;
-        thumbnailsContainerFragment.appendChild(userPhoto);
-      });
+    const sortedPhotos = photos.slice().sort(comparePhotos);
+    sortedPhotos.forEach(({url, likes, comments}) => {
+      const userPhoto = pictureTemplate.cloneNode(true);
+      userPhoto.querySelector('.picture__img').src = url;
+      userPhoto.querySelector('.picture__likes').textContent = likes;
+      userPhoto.querySelector('.picture__comments').textContent = comments.length;
+      thumbnailsContainerFragment.appendChild(userPhoto);
+    });
 
     thumbnailsContainer.appendChild(thumbnailsContainerFragment);
-    filter.classList.remove('img-filters--inactive');
+    renderFullPhoto(sortedPhotos);
   });
 };
 
 const renderRandomPhotos = () => {
   userPhotosPromise.then((photos) => {
-    const thumbnailsContainerFragment = document.createDocumentFragment();
-    photos
-      .slice();
-    photos = getShuffledArray(photos, RANDOM_PHOTOS_QUANTITY);
-    photos.forEach((photo) => {
+    const copiedPhotos = photos.slice();
+    const shuffledPhotos = getShuffledArray(copiedPhotos, RANDOM_PHOTOS_QUANTITY);
+    shuffledPhotos.forEach((photo) => {
       const userPhoto = pictureTemplate.cloneNode(true);
       userPhoto.querySelector('.picture__img').src = photo.url;
       userPhoto.querySelector('.picture__likes').textContent = photo.likes;
@@ -69,12 +65,8 @@ const renderRandomPhotos = () => {
     });
 
     thumbnailsContainer.appendChild(thumbnailsContainerFragment);
-    filter.classList.remove('img-filters--inactive');
+    renderFullPhoto(shuffledPhotos);
   });
 };
 
-renderDefaultPhotos();
-// renderPopularPhotos();
-// renderRandomPhotos();
-
-export {renderDefaultPhotos, renderPopularPhotos, renderRandomPhotos, filter};
+export {renderDefaultPhotos, renderPopularPhotos, renderRandomPhotos};
