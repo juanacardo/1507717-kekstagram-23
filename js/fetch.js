@@ -2,7 +2,10 @@ import {showAlert} from './utils.js';
 import {imgUploadForm, onUploadFormEscKeydown} from './form.js';
 import {setFormSuccessPopup, setFormErrorPopup} from './form-messages.js';
 
-const getUserPhotos = () => fetch('https://23.javascript.pages.academy/kekstagram/data')
+const serverData = 'https://23.javascript.pages.academy/kekstagram/data';
+const serverPostAdress = 'https://23.javascript.pages.academy/kekstagram';
+
+const getUserPhotos = () => fetch(serverData)
   .then((response) => {
     if (response.ok) {
       return response.json();
@@ -23,7 +26,7 @@ const setUserFormSubmit = (onSuccess, onError) => {
     const formData = new FormData(evt.target);
 
     fetch(
-      'https://23.javascript.pages.academy/kekstagram',
+      serverPostAdress,
       {
         method: 'POST',
         body: formData,

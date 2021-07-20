@@ -3,10 +3,9 @@ import {renderDefaultPhotos, renderPopularPhotos, renderRandomPhotos} from './th
 
 const RERENDER_DELAY = 500;
 
-const filter = document.querySelector('.img-filters');
-const defaulFilterButton = filter.querySelector('#filter-default');
-const randomFilterButton = filter.querySelector('#filter-random');
-const popularFilterButton = filter.querySelector('#filter-discussed');
+const defaulFilterButton = document.querySelector('#filter-default');
+const randomFilterButton = document.querySelector('#filter-random');
+const popularFilterButton = document.querySelector('#filter-discussed');
 
 const clearPictures = () => {
   const pictures = document.querySelectorAll('.picture');
@@ -16,25 +15,38 @@ const clearPictures = () => {
   });
 };
 
-const onDefaultButtonClick = () => {
+const renderPhotos = debounce((filterType) => {
   clearPictures();
-  debounce(renderDefaultPhotos(), RERENDER_DELAY);
+
+  switch (filterType) {
+    case defaulFilterButton.id:
+      renderDefaultPhotos();
+      break;
+    case popularFilterButton.id:
+      renderPopularPhotos();
+      break;
+    case randomFilterButton.id:
+      renderRandomPhotos();
+      break;
+  }
+}, RERENDER_DELAY);
+
+const onDefaultButtonClick = () => {
+  renderPhotos(defaulFilterButton.id);
   defaulFilterButton.classList.add('img-filters__button--active');
   popularFilterButton.classList.remove('img-filters__button--active');
   randomFilterButton.classList.remove('img-filters__button--active');
 };
 
 const onPopularButtonClick = () => {
-  clearPictures();
-  debounce(renderPopularPhotos(), RERENDER_DELAY);
+  renderPhotos(popularFilterButton.id);
   popularFilterButton.classList.add('img-filters__button--active');
   defaulFilterButton.classList.remove('img-filters__button--active');
   randomFilterButton.classList.remove('img-filters__button--active');
 };
 
 const onRandomButtonClick = () => {
-  clearPictures();
-  debounce(renderRandomPhotos(), RERENDER_DELAY);
+  renderPhotos(randomFilterButton.id);
   randomFilterButton.classList.add('img-filters__button--active');
   popularFilterButton.classList.remove('img-filters__button--active');
   defaulFilterButton.classList.remove('img-filters__button--active');
@@ -43,5 +55,3 @@ const onRandomButtonClick = () => {
 defaulFilterButton.addEventListener('click', onDefaultButtonClick);
 randomFilterButton.addEventListener('click', onRandomButtonClick);
 popularFilterButton.addEventListener('click', onPopularButtonClick);
-
-export {filter};
