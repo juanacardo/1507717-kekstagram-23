@@ -1,5 +1,4 @@
 import {isEscEvent} from './utils.js';
-import {userPhotosPromise} from './fetch.js';
 import {onUploadMessageEscKeydown} from './form-messages.js';
 
 const MAX_VISIBLE_COMMENTS = 5;
@@ -69,7 +68,7 @@ fullPhotoCloseButton.addEventListener('click', () => {
 });
 
 // Загрузка данных для большого изображения на основе данных маленьких фотографий
-userPhotosPromise.then((photos) => {
+const renderFullPhoto = (photos) => {
   const thumbnails = document.querySelectorAll('.picture__img');
   thumbnails.forEach((thumbnail, index) => {
     thumbnail.addEventListener('click', () => {
@@ -87,4 +86,6 @@ userPhotosPromise.then((photos) => {
       document.removeEventListener('keydown', onUploadMessageEscKeydown);
     });
   });
-});
+};
+
+export {renderFullPhoto};
