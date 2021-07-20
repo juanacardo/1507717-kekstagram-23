@@ -1,5 +1,4 @@
 import {isEscEvent} from './utils.js';
-import {userPhotosPromise} from './fetch.js';
 import {onUploadMessageEscKeydown} from './form-messages.js';
 
 const MAX_VISIBLE_COMMENTS = 5;
