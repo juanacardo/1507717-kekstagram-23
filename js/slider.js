@@ -5,7 +5,7 @@ const effectLevelSlider = document.querySelector('.effect-level__slider');
 const effectValueInput = document.querySelector('.effect-level__value');
 const sliderWrapper = document.querySelector('.img-upload__effect-level');
 
-const effectsList = document.querySelector('.effects__list');
+const effectsList = document.querySelector('.img-upload__effects');
 const originalRadio = document.querySelector('#effect-none');
 const chromeEffectRadio = document.querySelector('#effect-chrome');
 const sepiaEffectRadio = document.querySelector('#effect-sepia');
@@ -134,29 +134,12 @@ const onSwitchEffects = () => {
   }
 };
 
-const addEventListenersEffects = (evt) => {
-  if (evt.target.className === 'effects__radio') {
-    onSwitchEffects(evt);
-  }
+const addEventListenersEffects = () => {
+  effectsList.addEventListener('change', onSwitchEffects);
 };
 
-effectsList.addEventListener('click', addEventListenersEffects);
-
 const removeEventListenersEffects = () => {
-  originalRadio.removeEventListener('click', onSwitchEffects);
-  chromeEffectRadio.removeEventListener('click', onSwitchEffects);
-  sepiaEffectRadio.removeEventListener('click', onSwitchEffects);
-  marvinEffectRadio.removeEventListener('click', onSwitchEffects);
-  phobosEffectRadio.removeEventListener('click', onSwitchEffects);
-  heatEffectRadio.removeEventListener('click', onSwitchEffects);
-  resetEffect();
+  effectsList.removeEventListener('change', onSwitchEffects);
 };
 
 export {addEventListenersEffects, removeEventListenersEffects};
-
-// originalRadio.addEventListener('click', onSwitchEffects);
-// chromeEffectRadio.addEventListener('click', onSwitchEffects);
-// sepiaEffectRadio.addEventListener('click', onSwitchEffects);
-// marvinEffectRadio.addEventListener('click', onSwitchEffects);
-// phobosEffectRadio.addEventListener('click', onSwitchEffects);
-// heatEffectRadio.addEventListener('click', onSwitchEffects);

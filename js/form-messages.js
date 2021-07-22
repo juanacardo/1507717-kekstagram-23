@@ -35,10 +35,14 @@ const onCloseButtonClick = (evt) => {
   document.removeEventListener('keydown', onUploadMessageEscKeydown);
 };
 
-const setFormSuccessPopup = () => {
+const removeFormWindow = () => {
   hideImgUploadForm();
   removeEventListenersScale();
   removeEventListenersEffects();
+};
+
+const setFormSuccessPopup = () => {
+  removeFormWindow();
   successFragment.appendChild(successUploadMessageElement);
   document.body.appendChild(successFragment);
   successCloseButton.addEventListener('click', onCloseButtonClick);
@@ -47,9 +51,7 @@ const setFormSuccessPopup = () => {
 };
 
 const setFormErrorPopup = () => {
-  hideImgUploadForm();
-  removeEventListenersScale();
-  removeEventListenersEffects();
+  removeFormWindow();
   errorFragment.appendChild(errorUploadMessageElement);
   document.body.appendChild(errorFragment);
   errorCloseButton.addEventListener('click', onCloseButtonClick);
