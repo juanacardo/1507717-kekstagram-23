@@ -20,17 +20,19 @@ const comparePhotos = (commentsA, commentsB) => {
 
 const thumbnailsContainerFragment = document.createDocumentFragment();
 
+const renderThumbnails = (elements) => {
+  elements.forEach(({url, likes, comments}) => {
+    const userPhoto = pictureTemplate.cloneNode(true);
+    userPhoto.querySelector('.picture__img').src = url;
+    userPhoto.querySelector('.picture__likes').textContent = likes;
+    userPhoto.querySelector('.picture__comments').textContent = comments.length;
+    thumbnailsContainerFragment.appendChild(userPhoto);
+  });
+};
+
 const renderDefaultPhotos = () => {
   userPhotosPromise.then((photos) => {
-    photos
-      .forEach(({url, likes, comments}) => {
-        const userPhoto = pictureTemplate.cloneNode(true);
-        userPhoto.querySelector('.picture__img').src = url;
-        userPhoto.querySelector('.picture__likes').textContent = likes;
-        userPhoto.querySelector('.picture__comments').textContent = comments.length;
-        thumbnailsContainerFragment.appendChild(userPhoto);
-      });
-
+    renderThumbnails(photos);
     thumbnailsContainer.appendChild(thumbnailsContainerFragment);
     renderFullPhoto(photos);
   });
@@ -39,14 +41,7 @@ const renderDefaultPhotos = () => {
 const renderPopularPhotos = () => {
   userPhotosPromise.then((photos) => {
     const sortedPhotos = photos.slice().sort(comparePhotos);
-    sortedPhotos.forEach(({url, likes, comments}) => {
-      const userPhoto = pictureTemplate.cloneNode(true);
-      userPhoto.querySelector('.picture__img').src = url;
-      userPhoto.querySelector('.picture__likes').textContent = likes;
-      userPhoto.querySelector('.picture__comments').textContent = comments.length;
-      thumbnailsContainerFragment.appendChild(userPhoto);
-    });
-
+    renderThumbnails(sortedPhotos);
     thumbnailsContainer.appendChild(thumbnailsContainerFragment);
     renderFullPhoto(sortedPhotos);
   });
@@ -56,14 +51,7 @@ const renderRandomPhotos = () => {
   userPhotosPromise.then((photos) => {
     const copiedPhotos = photos.slice();
     const shuffledPhotos = getShuffledArray(copiedPhotos, RANDOM_PHOTOS_QUANTITY);
-    shuffledPhotos.forEach((photo) => {
-      const userPhoto = pictureTemplate.cloneNode(true);
-      userPhoto.querySelector('.picture__img').src = photo.url;
-      userPhoto.querySelector('.picture__likes').textContent = photo.likes;
-      userPhoto.querySelector('.picture__comments').textContent = photo.comments.length;
-      thumbnailsContainerFragment.appendChild(userPhoto);
-    });
-
+    renderThumbnails(shuffledPhotos);
     thumbnailsContainer.appendChild(thumbnailsContainerFragment);
     renderFullPhoto(shuffledPhotos);
   });

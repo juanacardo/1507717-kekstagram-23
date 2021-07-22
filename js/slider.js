@@ -5,6 +5,7 @@ const effectLevelSlider = document.querySelector('.effect-level__slider');
 const effectValueInput = document.querySelector('.effect-level__value');
 const sliderWrapper = document.querySelector('.img-upload__effect-level');
 
+const effectsList = document.querySelector('.effects__list');
 const originalRadio = document.querySelector('#effect-none');
 const chromeEffectRadio = document.querySelector('#effect-chrome');
 const sepiaEffectRadio = document.querySelector('#effect-sepia');
@@ -97,7 +98,12 @@ const sliderOptionsHandler = (min, max, start, step) => {
 };
 
 const resetEffect = () => {
-  imagePreview.classList = 'img-upload__preview';
+  for (const effect in SETTINGS) {
+    const currentClassName = SETTINGS[effect].className;
+    if (imagePreview.classList.contains(currentClassName)) {
+      imagePreview.classList.remove(currentClassName);
+    }
+  }
   sliderWrapper.classList.add('hidden');
   imagePreview.style.filter = 'none';
 };
@@ -106,31 +112,35 @@ const onSwitchEffects = () => {
   if (originalRadio.checked) {
     resetEffect();
   } else if (chromeEffectRadio.checked) {
+    resetEffect();
     addEffect(SETTINGS.chrome.className, SETTINGS.chrome.filter, SETTINGS.chrome.unit);
     sliderOptionsHandler(SETTINGS.chrome.min, SETTINGS.chrome.max, SETTINGS.chrome.start, SETTINGS.chrome.step);
   } else if (sepiaEffectRadio.checked) {
+    resetEffect();
     addEffect(SETTINGS.sepia.className, SETTINGS.sepia.filter, SETTINGS.sepia.unit);
     sliderOptionsHandler(SETTINGS.sepia.min, SETTINGS.sepia.max, SETTINGS.sepia.start, SETTINGS.sepia.step);
   } else if (marvinEffectRadio.checked) {
+    resetEffect();
     addEffect(SETTINGS.marvin.className, SETTINGS.marvin.filter, SETTINGS.marvin.unit);
     sliderOptionsHandler(SETTINGS.marvin.min, SETTINGS.marvin.max, SETTINGS.marvin.start, SETTINGS.marvin.step);
   } else if (phobosEffectRadio.checked) {
+    resetEffect();
     addEffect(SETTINGS.phobos.className, SETTINGS.phobos.filter, SETTINGS.phobos.unit);
     sliderOptionsHandler(SETTINGS.phobos.min, SETTINGS.phobos.max, SETTINGS.phobos.start, SETTINGS.phobos.step);
   } else if (heatEffectRadio.checked) {
+    resetEffect();
     addEffect(SETTINGS.heat.className, SETTINGS.heat.filter, SETTINGS.heat.unit);
     sliderOptionsHandler(SETTINGS.heat.min, SETTINGS.heat.max, SETTINGS.heat.start, SETTINGS.heat.step);
   }
 };
 
-const addEventListenersEffects = () => {
-  originalRadio.addEventListener('click', onSwitchEffects);
-  chromeEffectRadio.addEventListener('click', onSwitchEffects);
-  sepiaEffectRadio.addEventListener('click', onSwitchEffects);
-  marvinEffectRadio.addEventListener('click', onSwitchEffects);
-  phobosEffectRadio.addEventListener('click', onSwitchEffects);
-  heatEffectRadio.addEventListener('click', onSwitchEffects);
+const addEventListenersEffects = (evt) => {
+  if (evt.target.className === 'effects__radio') {
+    onSwitchEffects(evt);
+  }
 };
+
+effectsList.addEventListener('click', addEventListenersEffects);
 
 const removeEventListenersEffects = () => {
   originalRadio.removeEventListener('click', onSwitchEffects);
@@ -143,3 +153,10 @@ const removeEventListenersEffects = () => {
 };
 
 export {addEventListenersEffects, removeEventListenersEffects};
+
+// originalRadio.addEventListener('click', onSwitchEffects);
+// chromeEffectRadio.addEventListener('click', onSwitchEffects);
+// sepiaEffectRadio.addEventListener('click', onSwitchEffects);
+// marvinEffectRadio.addEventListener('click', onSwitchEffects);
+// phobosEffectRadio.addEventListener('click', onSwitchEffects);
+// heatEffectRadio.addEventListener('click', onSwitchEffects);

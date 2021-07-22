@@ -1,6 +1,7 @@
 import {isEscEvent, checkElementsHasDuplicates} from './utils.js';
 import {addEventListenersEffects, removeEventListenersEffects} from './slider.js';
 import {addEventListenersScale, removeEventListenersScale} from './scale.js';
+import {showPreview} from './photo-preview.js';
 
 const MAX_COMMENT_LENGTH = 140;
 const MIN_HASHTAG_LENGHT = 2;
@@ -29,6 +30,7 @@ const setError = (input) => {
 };
 
 const removeError = (input) => {
+  input.setCustomValidity('');
   input.style.borderColor = '';
   input.style.borderWidth = '';
 };
@@ -40,7 +42,6 @@ const onCommentInput = () => {
     commentInput.setCustomValidity(`Удалите лишние ${  valueLength - MAX_COMMENT_LENGTH } симв.`);
     setError(commentInput);
   } else {
-    commentInput.setCustomValidity('');
     removeError(commentInput);
   }
   commentInput.reportValidity();
@@ -67,10 +68,12 @@ const onHashtagInput = () => {
     } else if (checkElementsHasDuplicates(arrayOfHashtags)) {
       hashtagInput.setCustomValidity('Хэштеги должны быть разными');
     } else {
-      hashtagInput.setCustomValidity('');
       removeError(hashtagInput);
     }
   });
+  if (hashtagInput.value === '') {
+    removeError(hashtagInput);
+  }
   hashtagInput.reportValidity();
 };
 
@@ -107,6 +110,7 @@ const showUploadForm = () => {
 // Обработчик события на загрузку изображения
 uploadInput.addEventListener('change', () => {
   showUploadForm();
+  showPreview();
   commentInput.addEventListener('input', onCommentInput);
   hashtagInput.addEventListener('input', onHashtagInput);
   addEventListenersEffects();
@@ -125,4 +129,4 @@ formCloseButton.addEventListener('click', () => {
   removeEventListenersScale();
 });
 
-export {imgUploadForm, hideImgUploadForm, onUploadFormEscKeydown};
+export {imgUploadForm, hideImgUploadForm, onUploadFormEscKeydown, uploadInput};

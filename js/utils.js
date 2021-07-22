@@ -25,11 +25,11 @@ const getRandomArrayElement = (elements, splice) => {
 };
 
 const getShuffledArray = (array, arrayLenght) => {
-  const newArray = [];
-  while (newArray.length < arrayLenght) {
-    newArray.push(getRandomArrayElement(array, true));
+  const newElements = [];
+  while (newElements.length < arrayLenght) {
+    newElements.push(getRandomArrayElement(array, true));
   }
-  return newArray;
+  return newElements;
 };
 
 // Функция для проверки нажатия клавиши Esc

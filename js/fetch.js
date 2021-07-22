@@ -3,7 +3,7 @@ import {imgUploadForm, onUploadFormEscKeydown} from './form.js';
 import {setFormSuccessPopup, setFormErrorPopup} from './form-messages.js';
 
 const SERVER_DATA = 'https://23.javascript.pages.academy/kekstagram/data';
-const SERVER_POST_ADRESS = 'https://23.javascript.pages.academy/kekstagram';
+const SERVER_POST_ADDRESS = 'https://23.javascript.pages.academy/kekstagram';
 
 const getUserPhotos = () => fetch(SERVER_DATA)
   .then((response) => {
@@ -11,6 +11,7 @@ const getUserPhotos = () => fetch(SERVER_DATA)
       return response.json();
     } else {
       showAlert('Ошибка при загрузке фото. Попробуйте ещё раз');
+      return [];
     }
   })
   .catch(() => {
@@ -26,7 +27,7 @@ const setUserFormSubmit = (onSuccess, onError) => {
     const formData = new FormData(evt.target);
 
     fetch(
-      SERVER_POST_ADRESS,
+      SERVER_POST_ADDRESS,
       {
         method: 'POST',
         body: formData,
