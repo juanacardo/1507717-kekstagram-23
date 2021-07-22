@@ -102,6 +102,7 @@ const resetEffect = () => {
     const currentClassName = SETTINGS[effect].className;
     if (imagePreview.classList.contains(currentClassName)) {
       imagePreview.classList.remove(currentClassName);
+      break;
     }
   }
   sliderWrapper.classList.add('hidden');

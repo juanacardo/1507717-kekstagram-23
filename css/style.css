@@ -134,6 +134,7 @@ main {
 
 .img-filters--inactive {
   opacity: 0;
+  visibility: hidden;
 }
 
 .img-filters__button {

@@ -7,11 +7,4 @@ import './filter.js';
 
 import {renderDefaultPhotos} from './thumbnails.js';
 
-const filter = document.querySelector('.img-filters');
-
-const onDocumentLoad = () => {
-  renderDefaultPhotos();
-  filter.classList.remove('img-filters--inactive');
-};
-
-window.addEventListener('load', onDocumentLoad);
+renderDefaultPhotos();
